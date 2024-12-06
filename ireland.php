@@ -103,7 +103,7 @@ function irelandCompanyNameSearch() {
                 $responseText .= '<button id="choosePackageBtn" class="choose-package-btn" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">Choose a Package</button>';
                 $responseText .= '<script>
                     document.getElementById("choosePackageBtn").addEventListener("click", function() {
-                        window.location.href = "/404-2";
+                        window.location.href = "/package-ireland";
                     });
                 </script>';
         }
@@ -139,9 +139,15 @@ function ireland_name_checker_shortcode() {
             var companyName = document.getElementById('companyName').value;
             var responseContainer = document.getElementById('irelandResponseContainer');
 
-            // Update the URL with the irelandname parameter
+            // Define the additional parameters
+            var companyType = "Company limited by Shares"; // Example, you can dynamically set this value
+            var country = "Ireland";
+
+            // Update the URL with the parameters
             var currentUrl = new URL(window.location.href);
             currentUrl.searchParams.set('irelandname', companyName);
+            currentUrl.searchParams.set('Company-type', companyType);
+            currentUrl.searchParams.set('Country', country);
             window.history.replaceState({}, '', currentUrl); // Update the browser URL without reloading
 
             // Create and send the AJAX request
@@ -156,8 +162,10 @@ function ireland_name_checker_shortcode() {
                     var choosePackageBtn = document.getElementById('choosePackageBtn');
                     if (choosePackageBtn) {
                         choosePackageBtn.addEventListener('click', function () {
-                            var targetUrl = "/cccpt/constitution-cccpt/";
-                            targetUrl += "?irelandname=" + encodeURIComponent(companyName); // Append irelandname to the URL
+                            var targetUrl = "/package-ireland";
+                            targetUrl += "?irelandname=" + encodeURIComponent(companyName); // Append irelandname
+                            targetUrl += "&Company-type=" + encodeURIComponent(companyType); // Append company type
+                            targetUrl += "&Country=" + encodeURIComponent(country); // Append country
                             window.location.href = targetUrl; // Redirect to the new page
                         });
                     }
@@ -171,6 +179,7 @@ function ireland_name_checker_shortcode() {
         });
     });
 </script>
+
 <style>
 h2{
     color: white;

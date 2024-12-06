@@ -112,8 +112,58 @@ function company_name_checker_ajax_handler() {
                     $responseText .= '<p>This name is available for registration!</p>';
                     $responseText .= '</div>';
                     $responseText .= '<div style="text-align: center; margin-top: 20px;">';
-                    $responseText .= '<button id="choosePackageBtn" class="choose-package-btn" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">Choose a Package</button>';
+                    $responseText .= '<button id="choosePackageBtn" class="choose-package-btn ukbtn" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">Choose a Package</button>';
+                    $responseText .= '</div>';
+                    $responseText .= '<script>';
+                    $responseText .= 'document.addEventListener("click", function(event) {';
+                    $responseText .= '    if (event.target && event.target.id === "choosePackageBtn") {';    
+                    $responseText .= '        const urlParams = new URLSearchParams(window.location.search);';
+                    $responseText .= '        const companyType = urlParams.get("Company-type");';
+                    $responseText .= '        const ukName = urlParams.get("ukname");';
+                    $responseText .= '        const country = urlParams.get("Country");';
+                
+                    // Build the redirect URL logic
+                    $responseText .= '        let redirectUrl = "";';
+                    $responseText .= '        if (companyType === "Company limited by Shares" && country === "England") {'; 
+                    $responseText .= '            redirectUrl = "/package/?Company-type=" + encodeURIComponent(companyType) + "&Country=" + encodeURIComponent(country);';
+                    $responseText .= '        } else if (companyType === "Company limited by Guarantee" && country === "England") {'; 
+                    $responseText .= '            redirectUrl = "/package-gurrentee-england/?Company-type=" + encodeURIComponent(companyType) + "&Country=" + encodeURIComponent(country);';
+                    $responseText .= '        } else if (companyType === "LLP" && country === "England") {'; 
+                    $responseText .= '            redirectUrl = "/package-llp-england/?Company-type=" + encodeURIComponent(companyType) + "&Country=" + encodeURIComponent(country);';
+                    $responseText .= '        } else if (companyType === "Company limited by Shares" && country === "Scotland") {'; 
+                    $responseText .= '            redirectUrl = "/company-limited-by-shares-scotland/?Company-type=" + encodeURIComponent(companyType) + "&Country=" + encodeURIComponent(country);';
+                    $responseText .= '        } else if (companyType === "Company limited by Guarantee" && country === "Scotland") {'; 
+                    $responseText .= '            redirectUrl = "/company-limited-by-guarantee-scotland/?Company-type=" + encodeURIComponent(companyType) + "&Country=" + encodeURIComponent(country);';
+                    $responseText .= '        } else if (companyType === "LLP" && country === "Scotland") {'; 
+                    $responseText .= '            redirectUrl = "/llp-scotland/?Company-type=" + encodeURIComponent(companyType) + "&Country=" + encodeURIComponent(country);';
+                    $responseText .= '        }
+                    else if (companyType === "Company limited by Shares" && country === "Northern-Ireland") {'; 
+                    $responseText .= '            redirectUrl = "/company-limited-by-shares-northern-ireland/?Company-type=" + encodeURIComponent(companyType) + "&Country=" + encodeURIComponent(country);';
+                    $responseText .= '        } else if (companyType === "Company limited by Guarantee" && country === "Northern-Ireland") {'; 
+                    $responseText .= '            redirectUrl = "/company-limited-by-guarantee-northern-ireland/?Company-type=" + encodeURIComponent(companyType) + "&Country=" + encodeURIComponent(country);';
+                    $responseText .= '        } else if (companyType === "LLP" && country === "Northern-Ireland") {'; 
+                    $responseText .= '            redirectUrl = "/llp-northern-ireland/?Company-type=" + encodeURIComponent(companyType) + "&Country=" + encodeURIComponent(country);';
+                    $responseText .= '        }
+                    ';
+                
+                    // Append the `ukname` parameter if it exists
+                    $responseText .= '        if (redirectUrl && ukName) {'; 
+                    $responseText .= '            redirectUrl += "&ukname=" + encodeURIComponent(ukName);'; 
+                    $responseText .= '        }';
+                
+                    // Redirect if a valid URL is found
+                    $responseText .= '        if (redirectUrl) {'; 
+                    $responseText .= '            window.location.href = redirectUrl;'; 
+                    $responseText .= '        } else {'; 
+                    $responseText .= '            alert("Invalid selection or parameters missing.");'; 
+                    $responseText .= '        }';
+                    $responseText .= '    }';
+                    $responseText .= '});';
+                    $responseText .= '</script>';
                 }
+                
+                
+                
             } else {
                 $responseText .= '<div class="response-box" style="background-color: #ff4f4f; color: white; padding: 20px; margin-top: 20px; border-radius: 10px; text-align: center;">';
                 $responseText .= '<p>Error: Unable to retrieve results. HTTP Code ' . $httpCode . '</p>';
@@ -191,6 +241,13 @@ function company_name_checker_shortcode() {
                 });
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('.ukbtn').addEventListener('click', function() {
+        window.location.href = '/uk-test';
+    });
+});
+
         document.addEventListener('DOMContentLoaded', function () {
     const inputField = document.getElementById('search'); // Replace 'companyName' with your input field ID
 
@@ -200,6 +257,9 @@ function company_name_checker_shortcode() {
 });
 
     </script>
+
+
+
     <?php
     return ob_get_clean();
 }

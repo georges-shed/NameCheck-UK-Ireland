@@ -21,7 +21,7 @@ jQuery(document).ready(function($) {
 jQuery(document).ready(function ($) {
     $('#companyNameCheckerForm').on('submit', function (e) {
         e.preventDefault(); // Prevent default form submission
-        
+
         const searchQuery = $('#search').val(); // Get the search input value
         const formData = $(this).serialize(); // Serialize the form data
 
@@ -33,14 +33,8 @@ jQuery(document).ready(function ($) {
         // Send the AJAX request
         $.post(ajax_object.ajax_url, formData + '&action=company_name_checker', function (response) {
             $('#responseContainer').html(response); // Display the response in the container
-
-            // Add functionality for dynamically loaded button
-            $('#choosePackageBtn').on('click', function () {
-                const targetUrl = '/cccpt/constitution-cccpt/';
-                const redirectUrl = targetUrl + '?ukname=' + encodeURIComponent(searchQuery); // Append ukname as a parameter
-                window.location.href = redirectUrl; // Redirect to the new URL
-            });
         });
     });
 });
+
 
